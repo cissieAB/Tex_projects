@@ -9,7 +9,7 @@ COLOR_LIMIT = "#EEDBDA"
 COLOR_ACHIEVED = "#DE9A95"
 COLOR_LINE = "#6E7F80"
 
-x_entries = {'T4 f32', 'T4 f16', 'A100 f32', 'A100 f16'}
+x_entries = ['T4 f32', 'T4 f16', 'A100 f32', 'A100 f16']
 max_flops = {
     'Limit': [8.10, 65, 19.37, 312],
     'Achieved': [5.75, 34.64, 20.30, 214.41],
@@ -20,7 +20,7 @@ x = list(range(len_x))
 
 #############################################################
 # Ax1: bar chart
-fig, ax1 = plt.subplots(figsize=(7, 4))
+fig, ax1 = plt.subplots(figsize=(6, 4))
 
 width = 0.4  # the width of the bars
 idx = 0
@@ -39,17 +39,34 @@ for legend, flops in max_flops.items():
 ax1.set_ylabel('Performance (TFLOPS)')
 ax1.set_yscale('log')
 ax1.set_ylim(0.1, 800)
-ax1.set_xticks(x_center, x_entries)
+ax1.set_xticks(x_center, x_entries)  # overlap with table
 ax1.legend(loc='upper left')
 
 #############################################################
 # Ax2: line
-utilization = [max_flops['Achieved'][i] / max_flops['Limit'][i] * 100 for i in range(len_x)]
-print(utilization)
+utilizations = [max_flops['Achieved'][i] / max_flops['Limit'][i] * 100 for i in range(len_x)]
+print("Utilizations")
+print(utilizations)
 ax2 = ax1.twinx()
-ax2.plot(x_center, utilization, 'o-.', color=COLOR_LINE)
-ax2.set_ylabel('Utilization (%)')
+ax2.plot(x_center, utilizations, 'o-.', color=COLOR_LINE)
+ax2.set_ylabel('Utilization')
 
 ax2.set_ylim(0, 125)
 
+############################################################
+# table
+# two blank rows to increase vspace
+cell_text = [['' for i in range(len_x)], ['' for i in range(len_x)], ['%4.2f %%' %u for u in utilizations]]
+
+plt.table(cellText=cell_text,
+		      rowLabels=['', '', 'Utilization'], cellLoc='center',
+                      loc='bottom', edges='vertical')
+# Adjust layout to make room for the table
+plt.subplots_adjust(left=0.13, bottom=0.2)
+
 plt.savefig('fig2_max_performance.png')
+
+##########################################
+print("f32 speedup %6.1f"%(max_flops['Achieved'][2]/max_flops['Achieved'][0]))
+print("f16 speedup %6.1f"%(max_flops['Achieved'][3]/max_flops['Achieved'][1]))
+
