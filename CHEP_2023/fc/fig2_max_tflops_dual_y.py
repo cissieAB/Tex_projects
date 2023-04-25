@@ -9,10 +9,10 @@ COLOR_LIMIT = "#EEDBDA"
 COLOR_ACHIEVED = "#DE9A95"
 COLOR_LINE = "#6E7F80"
 
-x_entries = ['T4 f32', 'T4 f16', 'A100 f32', 'A100 f16']
+x_entries = ['T4 FP32', 'T4 FP16', 'A100 FP32', 'A100 FP16']
 max_flops = {
     'Limit': [8.1, 65.0, 19.4, 312.0],
-    'Achieved': [5.75, 34.64, 20.30, 214.41],
+    'Achieved': [5.75, 34.64, 20.30, 214.80],
 }
 
 len_x = len(x_entries)
@@ -44,19 +44,19 @@ ax1.legend(loc='upper left')
 
 #############################################################
 # Ax2: line
-utilizations = [max_flops['Achieved'][i] / max_flops['Limit'][i] * 100 for i in range(len_x)]
-print("Utilization rate (%)")
-print(utilizations)
+utilization = [max_flops['Achieved'][i] / max_flops['Limit'][i] * 100 for i in range(len_x)]
+print("Utilization(%)")
+print(utilization)
 ax2 = ax1.twinx()
-ax2.plot(x_center, utilizations, 'o-.', color=COLOR_LINE)
-ax2.set_ylabel('Utilization rate (%)')
+ax2.plot(x_center, utilization, 'o-.', color=COLOR_LINE)
+ax2.set_ylabel('Utilization (%)')
 
 ax2.set_ylim(0, 125)
 
 ############################################################
 # table
 # two blank rows to increase vspace
-cell_text = [['' for i in range(len_x)], ['' for i in range(len_x)], ['%4.2f %%' %u for u in utilizations]]
+cell_text = [['' for i in range(len_x)], ['' for i in range(len_x)], ['%4.2f %%' %u for u in utilization]]
 
 plt.table(cellText=cell_text,
           rowLabels=['', '', 'Utilization'], cellLoc='center',
