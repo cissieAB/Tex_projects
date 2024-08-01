@@ -1,5 +1,4 @@
 # Plots for my submission
-My LaTex scripts for tikz & pgfplot plotting.
 
 ## Manuals
 - Tex Live guide: https://www.tug.org/texlive/doc/texlive-en/texlive-en.html
