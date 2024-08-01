@@ -1,4 +1,4 @@
-# Tex_projects
+# Plots for my submission
 My LaTex scripts for tikz & pgfplot plotting.
 
 ## Manuals
